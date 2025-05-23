@@ -13,6 +13,7 @@ interface Document {
   author: string;
   lastUpdated: string;
   source: string;
+  description?: string;
 }
 
 interface Chat {
@@ -78,25 +79,28 @@ const ChatInterface = () => {
       const aiMessage = {
         id: (Date.now() + 1).toString(),
         role: 'assistant' as const,
-        content: "Based on your organization's knowledge base, here's what I found. This information comes from multiple sources across your integrated platforms.",
+        content: "Based on your organization's knowledge base, here's what I found regarding your query. This information comes from multiple sources across your integrated platforms.",
         supportingDocs: [
           {
             title: "MCQ PLUS - Collaborative Confluence Space",
             author: "Paresh Sahoo",
             lastUpdated: "2 days ago",
-            source: "Confluence"
+            source: "Confluence",
+            description: "MCQ PLUS is a collaborative Confluence space designed to support users in managing and navigating multiple-choice question (MCQ) content effectively..."
           },
           {
             title: "Backend Service Documentation",
             author: "Paresh Sahoo", 
             lastUpdated: "1 week ago",
-            source: "Confluence"
+            source: "Confluence",
+            description: "Technical documentation for the backend service implementation including API endpoints and data models..."
           },
           {
             title: "Product Requirements Document (PRD)",
             author: "Paresh Sahoo",
             lastUpdated: "3 days ago",
-            source: "SharePoint"
+            source: "Jira",
+            description: "Detailed product requirements and specifications for the MCQ system with user stories and acceptance criteria..."
           }
         ]
       };
@@ -122,7 +126,7 @@ const ChatInterface = () => {
       {/* Sidebar */}
       <div 
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out",
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >

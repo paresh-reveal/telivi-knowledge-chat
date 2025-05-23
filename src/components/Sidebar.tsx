@@ -91,7 +91,7 @@ const MainSidebar = ({ isAdmin = true }: SidebarProps) => {
 
           {isAdmin && (
             <SidebarGroup
-              open={teamGroupExpanded}
+              defaultOpen={teamGroupExpanded}
               onOpenChange={setTeamGroupExpanded}
             >
               <SidebarGroupLabel>Teams</SidebarGroupLabel>

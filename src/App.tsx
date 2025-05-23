@@ -44,7 +44,7 @@ const App = () => {
               </div>
             )}
             
-            <div className={`flex-1 transition-all duration-300 ease-in-out ${sidebarVisible ? 'pl-0' : 'pl-0'}`}>
+            <div className={`flex-1 transition-all duration-300 ease-in-out ${sidebarVisible ? 'ml-0' : 'ml-0'}`}>
               <div className="fixed top-4 left-4 z-10">
                 <button
                   onClick={() => setSidebarVisible(!sidebarVisible)}
@@ -56,7 +56,7 @@ const App = () => {
               
               <Routes>
                 <Route path="/" element={<Index />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin/*" element={<Admin />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

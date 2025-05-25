@@ -34,14 +34,9 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface SidebarProps {
-  isAdmin?: boolean;
-}
-
-const MainSidebar = ({ isAdmin = true }: SidebarProps) => {
+const MainSidebar = () => {
   const location = useLocation();
   const { toast } = useToast();
-  const [teamGroupExpanded, setTeamGroupExpanded] = useState(false);
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -75,64 +70,8 @@ const MainSidebar = ({ isAdmin = true }: SidebarProps) => {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-
-              {isAdmin && (
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild tooltip="Admin" isActive={isActive("/admin")}>
-                    <Link to="/admin">
-                      <LayoutDashboard className="h-4 w-4" />
-                      <span>Admin</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              )}
             </SidebarMenu>
           </SidebarGroup>
-
-          {isAdmin && (
-            <SidebarGroup
-              defaultOpen={teamGroupExpanded}
-              onOpenChange={setTeamGroupExpanded}
-            >
-              <SidebarGroupLabel>Teams</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link to="/teams/dev">
-                        <Github className="h-4 w-4" />
-                        <span>Dev Team</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link to="/teams/sales">
-                        <Users className="h-4 w-4" />
-                        <span>Sales Team</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link to="/teams/marketing">
-                        <FileText className="h-4 w-4" />
-                        <span>Marketing Team</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link to="/teams/cxo">
-                        <BarChart3 className="h-4 w-4" />
-                        <span>CXO</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          )}
 
           <SidebarGroup>
             <SidebarGroupLabel>Knowledge Base</SidebarGroupLabel>

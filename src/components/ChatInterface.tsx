@@ -1,8 +1,15 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { Menu, MessageSquare, Plus, Settings, User, History, LogOut, Send } from 'lucide-react';
+import { Menu, MessageSquare, Plus, Settings, User, History, LogOut, Send, Mic, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from "@/components/ui/badge";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu"; // Adjust path if necessary
 import ChatMessage from '@/components/ChatMessage';
 import ProfileModal from '@/components/ProfileModal';
 import { cn } from '@/lib/utils';
@@ -34,6 +41,8 @@ const ChatInterface = () => {
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [chats, setChats] = useState<Chat[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [micActive, setMicActive] = useState(false);
+  const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
   const messageEndRef = useRef<HTMLDivElement>(null);
 
   // Scroll to bottom of chat when messages change
@@ -244,14 +253,49 @@ const ChatInterface = () => {
         {/* Input Area */}
         <div className="border-t border-gray-200 bg-white p-4">
           <div className="max-w-4xl mx-auto">
-            <div className="flex space-x-2 relative">
+            <div className="flex items-center space-x-2 relative flex-wrap sm:flex-nowrap gap-y-2"> {/* Allow wrapping on xs, prevent on sm+, add gap if wrapped */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" className="rounded-full"> {/* Or other styling for '+' button */}
+                    <Plus className="h-5 w-5" /> {/* Adjusted size for visibility */}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start"> {/* Align dropdown to the start of the trigger */}
+                  <DropdownMenuItem onSelect={() => setSelectedPrompt("Detailed")}>Detailed</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setSelectedPrompt("Code Assist")}>Code Assist</DropdownMenuItem>
+                  <DropdownMenuItem onSelect={() => setSelectedPrompt("Document Search")}>Document Search</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {selectedPrompt && (
+                <Badge variant="secondary" className="flex items-center space-x-1 max-w-[calc(100%-theme(spacing.28))] sm:max-w-xs"> {/* Limit width and allow truncation */}
+                  <span className="whitespace-nowrap overflow-hidden text-ellipsis">{selectedPrompt}</span>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-4 w-4 p-0" // Make 'X' button very small
+                    onClick={() => setSelectedPrompt(null)}
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </Badge>
+              )}
+
               <Input
                 value={currentInput}
                 onChange={(e) => setCurrentInput(e.target.value)}
                 placeholder="Ask anything..."
-                className="flex-1 pr-10"
+                className="flex-1 pr-20"
                 onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
               />
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setMicActive(!micActive)}
+                className="absolute right-10 top-0 h-full rounded-none"
+              >
+                <Mic className={cn("h-4 w-4", micActive ? "text-red-500" : "")} />
+              </Button>
               <Button 
                 onClick={handleSendMessage} 
                 disabled={!currentInput.trim() || isLoading}
